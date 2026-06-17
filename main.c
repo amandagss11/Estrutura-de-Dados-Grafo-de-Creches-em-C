@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,11 +11,11 @@
 
 #define MAX_CRECHES 20
 
-// Matriz estática de adjacências (indicando 0 ou 1)
+// Matriz estÃ¡tica de adjacÃªncias (indicando 0 ou 1)
 int matrizAdjacencia[MAX_CRECHES][MAX_CRECHES];
 int totalCreches = 0;
 
-// Estrutura para armazenar a distância de uma conexão específica
+// Estrutura para armazenar a distÃ¢ncia de uma conexÃ£o especÃ­fica
 typedef struct Conexao {
     int idDestino;
     float distancia;
@@ -25,15 +26,15 @@ typedef struct Conexao {
 typedef struct Creche {
     int id;
     char nome[50];
-    Conexao* conexoes; // Sublista encadeada com as distâncias para os vizinhos
+    Conexao* conexoes; // Sublista encadeada com as distÃ¢ncias para os vizinhos
     struct Creche* proximo;
 } Creche;
 
 Creche* headCreches = NULL;
 
-// --- FUNÇÕES DA LISTA ENCADEADA ---
+// --- FUNÃ‡Ã•ES DA LISTA ENCADEADA ---
 
-// Busca uma creche pelo nome e retorna seu ID. Se não existir, insere na lista.
+// Busca uma creche pelo nome e retorna seu ID. Se nÃ£o existir, insere na lista.
 int obterOuInserirCreche(const char* nome) {
     Creche* atual = headCreches;
     Creche* anterior = NULL;
@@ -46,7 +47,7 @@ int obterOuInserirCreche(const char* nome) {
         atual = atual->proximo;
     }
 
-    // Se não encontrou, cria uma nova creche
+    // Se nÃ£o encontrou, cria uma nova creche
     Creche* nova = (Creche*)malloc(sizeof(Creche));
     nova->id = totalCreches++;
     strcpy(nova->nome, nome);
@@ -82,7 +83,7 @@ Creche* obterCrechePorId(int id) {
     return NULL;
 }
 
-// Insere uma nova conexão (distância) na sublista de uma creche de forma ordenada (crescente)
+// Insere uma nova conexÃ£o (distÃ¢ncia) na sublista de uma creche de forma ordenada (crescente)
 void inserirConexaoEncadeada(int idOrigem, int idDestino, float distancia) {
     Creche* creche = obterCrechePorId(idOrigem);
     if (!creche) return;
@@ -92,7 +93,7 @@ void inserirConexaoEncadeada(int idOrigem, int idDestino, float distancia) {
     nova->distancia = distancia;
     nova->proximo = NULL;
 
-    // Inserção ordenada por distância (Crescente)
+    // InserÃ§Ã£o ordenada por distÃ¢ncia (Crescente)
     Conexao* atual = creche->conexoes;
     Conexao* anterior = NULL;
 
@@ -110,16 +111,16 @@ void inserirConexaoEncadeada(int idOrigem, int idDestino, float distancia) {
     }
 }
 
-// Adiciona uma nova conexão completa no sistema (Matriz + Lista Encadeada)
+// Adiciona uma nova conexÃ£o completa no sistema (Matriz + Lista Encadeada)
 void adicionarConexao(const char* origem, const char* destino, float distancia) {
     int idOrigem = obterOuInserirCreche(origem);
     int idDestino = obterOuInserirCreche(destino);
 
-    // Atualiza a matriz estática com 1 (existe conexão)
+    // Atualiza a matriz estÃ¡tica com 1 (existe conexÃ£o)
     matrizAdjacencia[idOrigem][idDestino] = 1;
     matrizAdjacencia[idDestino][idOrigem] = 1;
 
-    // Atualiza as listas encadeadas de distâncias (Ida e Volta - Grafo Não Dirigido)
+    // Atualiza as listas encadeadas de distÃ¢ncias (Ida e Volta - Grafo NÃ£o Dirigido)
     inserirConexaoEncadeada(idOrigem, idDestino, distancia);
     inserirConexaoEncadeada(idDestino, idOrigem, distancia);
 }
@@ -147,7 +148,7 @@ void lerArquivoGrafo(const char* nomeArquivo) {
     printf("Dados do grafo carregados com sucesso!\n");
 }
 
-// 2. Informar o número de conexões possíveis partindo de cada creche (usando a Matriz Estática)
+// 2. Informar o nÃºmero de conexÃµes possÃ­veis partindo de cada creche (usando a Matriz EstÃ¡tica)
 void numConexoesPorCreche() {
     printf("\n--- NUMERO DE CONEXOES POR CRECHE (Via Matriz Estatica) ---\n");
     Creche* atual = headCreches;
@@ -163,7 +164,7 @@ void numConexoesPorCreche() {
     }
 }
 
-// 3. Listar para uma dada creche as conexões em ordem crescente de distância (via Lista Encadeada)
+// 3. Listar para uma dada creche as conexÃµes em ordem crescente de distÃ¢ncia (via Lista Encadeada)
 void listarConexoesOrdenadas(const char* nomeCreche) {
     Creche* atual = headCreches;
     while (atual != NULL) {
@@ -185,7 +186,7 @@ void listarConexoesOrdenadas(const char* nomeCreche) {
     printf("Creche '%s' nao encontrada.\n", nomeCreche);
 }
 
-// 4. Informar a distância entre duas creches informadas, se existir
+// 4. Informar a distÃ¢ncia entre duas creches informadas, se existir
 void informarDistancia(const char* origem, const char* destino) {
     Creche* atual = headCreches;
     int idDestino = -1;
@@ -208,13 +209,13 @@ void informarDistancia(const char* origem, const char* destino) {
     atual = headCreches;
     while (atual != NULL) {
         if (strcmp(atual->nome, origem) == 0) {
-            // Verifica na matriz primeiro se há conexão
+            // Verifica na matriz primeiro se hÃ¡ conexÃ£o
             if (matrizAdjacencia[atual->id][idDestino] == 0) {
                 printf("Nao existe conexao direta entre %s e %s.\n", origem, destino);
                 return;
             }
 
-            // Busca o valor real da distância na lista encadeada
+            // Busca o valor real da distÃ¢ncia na lista encadeada
             Conexao* con = atual->conexoes;
             while (con != NULL) {
                 if (con->idDestino == idDestino) {
@@ -229,6 +230,7 @@ void informarDistancia(const char* origem, const char* destino) {
     printf("Uma ou ambas as creches nao foram encontradas.\n");
 }
 
+// --- FUNÃ‡ÃƒO PRINCIPAL / INTERFACE COM USUÃRIO ---
 // --- FUNÇÃO PRINCIPAL / INTERFACE COM USUÁRIO ---
 
 int main() {
@@ -256,7 +258,15 @@ int main() {
         printf("4. Incluir nova conexao manual\n");
         printf("0. Sair\n");
         printf("Escolha uma opcao: ");
-        scanf("%d", &opcao);
+        
+        // Espaço antes do %d ajuda a ignorar quebras de linha residuais no menu
+        if (scanf(" %d", &opcao) != 1) {
+            printf("Entrada invalida!\n");
+            // Limpa buffer se o usuário digitar uma letra por engano
+            while (getchar() != '\n');
+            opcao = -1;
+            continue;
+        }
 
         switch (opcao) {
             case 1:
@@ -281,9 +291,14 @@ int main() {
                 scanf("%s", op2);
                 printf("Distancia em Km: ");
                 scanf("%f", &dist);
+                
                 adicionarConexao(op1, op2, dist);
                 printf("Nova conexao incluida com sucesso!\n");
+                
+                // Limpa o buffer do teclado para o menu não passar direto
+                while (getchar() != '\n'); 
                 break;
+                
             case 0:
                 printf("Encerrando o programa.\n");
                 break;

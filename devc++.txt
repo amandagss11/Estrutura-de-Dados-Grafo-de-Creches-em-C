@@ -1,0 +1,13 @@
+pra rodar ele no devC++ No menu superior do Dev-C++, clique em Ferramentas (Tools) e selecione Opções do Compilador (Compiler Options).
+
+Na janela que se abrir, procure por uma aba chamada Geral (General) ou Compilador (Compiler).
+
+Marque a caixinha de seleção que diz: "Adicionar os seguintes comandos quando chamar o compilador" (Add the following commands when calling the compiler).
+
+No campo de texto logo abaixo dessa caixinha, digite exatamente o seguinte comando:
+
+Plaintext
+-std=c99
+Clique em OK na parte inferior da janela para salvar.
+
+Aperte F11 no seu teclado para compilar e rodar novamente.
